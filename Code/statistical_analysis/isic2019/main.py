@@ -37,10 +37,10 @@ fhir_port = str(os.environ['FHIR_PORT'])
 # else:
 #     pass
 
-## Collect Data Statistic
-# Create an instance
+# Collect Data Statistic
+## Create an instance
 client = SyncFHIRClient('http://{}:{}/fhir'.format(fhir_server, fhir_port))
-# Search for patients
+## Search for patients
 patients = client.resources('Patient')  # Return lazy search set
 patients_data = []
 for patient in patients:
@@ -49,10 +49,9 @@ for patient in patients:
         patient_birthDate = patient.birthDate
     except:
         pass
-    # patinet_id, gender, birthDate
     patients_data.append([patient.id, patient.gender, patient_birthDate])
 patients_df = pd.DataFrame(patients_data, columns=["patient_id", "gender", "birthDate"])
-# Search for media
+## Search for media
 media_list = client.resources('Media').include('Patient', 'subject')
 media_data = []
 for media in media_list:
@@ -75,7 +74,7 @@ for media in media_list:
 media_df = pd.DataFrame(media_data, columns=["patient_id", "media_id", "bodySite", "reasonCode", "note", "image_url"])
 data_df = pd.merge(patients_df, media_df, on='patient_id', how='outer')
 
-# Python3 code to  calculate age in years
+## Collect statistical information
 import datetime
 from datetime import date
 def calculateAge(born):
@@ -148,8 +147,3 @@ anotom_sum_df = anotom_df.groupby('bodySite').sum()
 anotom_sum_df.T.plot(kind='bar')
 plt.savefig(osp.join(experiment_dir,'anotom_mal.jpg'))
 anotom_sum_df.to_csv(osp.join(experiment_dir, 'anotom.csv'), index=True)
-
-
-
-
-

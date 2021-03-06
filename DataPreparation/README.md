@@ -2,7 +2,7 @@
 
 Please follow the instructions to set up the environment to conduct the experiments.
 
-## Download ISIC2019 Dataset
+## 1. Download ISIC2019 Dataset
 
 The ISIC2019 dataset is available on Kaggle with the url: https://www.kaggle.com/andrewmvd/isic-2019. You could download the dataset manually from the website or use kaggle api. 
 
@@ -52,19 +52,37 @@ The following, we present the instructions of downloading the ISIC2019 dataset u
    ~/.local/bin/kaggle datasets download andrewmvd/isic-2019
    ```
 
-## Upload ISIC2019 Metadate to FHIR Resources
+## 2. Upload ISIC2019 Metadate to FHIR server
 
 ### Install Blaze FHIR server
-The Blaze FHIR server is used to store patient's metadata. 
+We use Blaze FHIR server to store patient's metadata. 
+
 Please find the instuctions of installation on the Blaze github repository with the url https://github.com/samply/blaze.
 
+Docker example:
 ```bash
 docker volume create blaze-data
 docker run -d -p 8080:8080 -v blaze-data:/app/data -e BASE_URL=http://menzel.informatik.rwth-aachen.de:8080 --name blaze-latest samply/blaze:0.9.0-alpha.14 
 ```
 
 ### Upload FHIR Resources
+We use Blazectl to upload FHIR Resources.
 
-```
+Please find the instuctions of installation on the Blazectl github repository with the url https://github.com/samply/blazectl.
+
+```bash
 blazectl upload --server http://menzel.informatik.rwth-aachen.de:8080/fhir output
 ```
+
+
+## 3. Upload Images to MinIO server
+
+
+## Useful Links
+https://github.com/samply/blaze
+
+https://github.com/samply/blazectl
+
+https://hub.docker.com/r/samply/blaze
+
+https://alexanderkiel.gitbook.io/blaze/deployment/environment-variables
